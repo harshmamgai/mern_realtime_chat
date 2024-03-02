@@ -12,6 +12,8 @@ app.get("/",(req,res)=>{
     res.send("Hello World!!")
 })
 
+//created auth routes and added middleware
+
 app.use("/api/auth",authRoutes);
 
 app.listen(PORT,()=>{
