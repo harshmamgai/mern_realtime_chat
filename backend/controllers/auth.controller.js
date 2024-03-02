@@ -1,6 +1,7 @@
 import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs'
 import express from 'express';
+import generateTokenAndSetCookie from '../utils/generateToken.js';
 
 // No need to create a new express app here
 // Remove: const app = express();
@@ -38,6 +39,7 @@ return res.status(400).json({error:"Username already exists"});
     if(newUser){
 
         //generate jwt Token here
+    generateTokenAndSetCookie(newUser._id,res);
     await newUser.save();
     res.status(201).json({
         _id:newUser._id,
@@ -59,9 +61,25 @@ res.status(500).json({error:err.message})
 
 };
 
-export const Login = (req, res) => {
-    res.send("Logout user");
-    console.log("Logout User");
+export const Login = async (req, res) => {
+try{
+const  {username,password}= req.body;
+const user=await  User.findOne({username});
+const isPasswordCorrect=await  bcrypt.compare(password,user?.password||"");
+if(!user ||!isPasswordCorrect){
+return res.status(400).json({error:"Invalid Credentials"});
+}
+generateTokenAndSetCookie(user._id,res);
+res.status(200).json({
+    _id:user._id,
+    fullName:user.fullName,
+    username:user.username,
+    profilePic:user.profilePic,
+});
+}
+catch(err){
+    console.log(err.message);
+}
 };
 
 export const Logout = (req, res) => {
@@ -69,5 +87,3 @@ export const Logout = (req, res) => {
     console.log("Logout User");
 };
 
-// No need to listen to a port here
-// Remove: const port = 3000; app.listen(port, () => { console.log(`Server is running on port ${port}`); });
