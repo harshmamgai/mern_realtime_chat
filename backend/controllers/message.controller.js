@@ -26,14 +26,16 @@ const newMessage=new Message({
     message,
 })
 
-await newMessage.save(); //saving newly created message in database
+
 res.status(201).json({newMessage})
 if(newMessage){
     //if new message got created then push the newly created message id's to conversation.messages array 
     conversation.messages.push(newMessage._id)
 
 }
-await conversation.save();
+// await conversation.save();
+// await newMessage.save(); //saving newly created message in database
+await Promise.all([conversation.save(),newMessage.save()]);
   }
   catch(error){
     console.log(error.messaage)
