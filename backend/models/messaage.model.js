@@ -10,7 +10,7 @@ recieverId:{
     ref:"User",
     required:true
 },
-messaage:{
+message:{
     type:String,
     required:true
 }
