@@ -1,3 +1,11 @@
  export const sendMessage=async(req,res)=>{
-    console.log("message sent");
-}
+  try{
+const {message}=req.body;
+const {id}=req.params;
+  }
+  catch(error){
+    res.status(500).json({
+        error:"Internal server error"
+    })
+  }
+};
