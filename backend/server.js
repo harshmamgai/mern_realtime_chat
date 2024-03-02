@@ -10,6 +10,14 @@ app.use(express.json()); //middleware to parse the incoming requests with JSON p
 //created auth routes and added middleware
 app.use("/api/auth",authRoutes);
 
+/*
+we were not able to read req.body because i maintianed app.use(express.json()) middleware after app.use("/api/auth",authRoutes) router middleware so while we 
+ were navigating to localhost://5000/api/login and were doing post request and passing data like {
+    "name":"harsh"
+ }
+ as we don't have json parser so  we need to use this middleware which will convert as we used that after router middleware so 
+ node js /express won't able to read the req body we were sending
+*/
 
 
 
