@@ -83,7 +83,13 @@ catch(err){
 };
 
 export const Logout = (req, res) => {
-    res.send("Logout user");
-    console.log("Logout User");
+    try{
+        res.cookie("jwt","",{maxAge:0})
+        res.status(200).json({message:"Logged out successfully!"});
+    }
+   catch(err){
+    console.log("error in logout controller",err.message)
+    res.status(400).json({error:"Internal server error"});
+   }
 };
 
