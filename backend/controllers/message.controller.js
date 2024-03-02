@@ -33,6 +33,8 @@ if(newMessage){
     conversation.messages.push(newMessage._id)
 
 }
+//SOCKET.io functionality to make app realtime
+
 // await conversation.save();
 // await newMessage.save(); //saving newly created message in database
 await Promise.all([conversation.save(),newMessage.save()]);
@@ -45,3 +47,21 @@ await Promise.all([conversation.save(),newMessage.save()]);
     })
   }
 };
+
+export const getMessages=async(req,res)=>{
+try{
+    console.log(req.params)
+const {id:userToChatId}=req.params;
+const senderId=req.user._id;
+const conversation=await Conversation.findOne({
+    participants:{$all:[senderId,userToChatId]},
+}).populate("messages"); // as we know  messages in conversation only contain the message id not the
+//content in order to see the content mongoose provides a method called populate
+
+res.status(200).json(conversation.messages);
+}
+catch(error){
+    console.log("error in getMessages controller", error.message);
+    res.status(500).json({error:"Internal server error"});
+}
+}
