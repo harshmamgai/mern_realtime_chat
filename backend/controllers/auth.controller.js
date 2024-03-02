@@ -1,11 +1,14 @@
 export const Signup=(req,res)=>{
-    console.login("Signup User")
+    res.send("signup user");
+    console.log("Signup User");
 }
 
-export const login=(req,res)=>{
-    console.login("Login User")
+export const Login=(req,res)=>{
+    res.send("login user");
+    console.log("Login User");
 }
 
-export const logout=(req,res)=>{
-    console.login("Logout User")
+export const Logout=(req,res)=>{
+    res.send("logout user");
+    console.log("Logout User");
 }
