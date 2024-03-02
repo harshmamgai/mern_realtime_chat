@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import authRoutes from './routes/auth.routes.js'
+import messageRoutes from'./routes/message.routes.js';
 import connectToMongoDB  from './db/connectToMongoDB.js';
 const PORT=process.env.PORT ||5000;
 
@@ -18,7 +19,7 @@ we were not able to read req.body because i maintianed app.use(express.json()) m
  as we don't have json parser so  we need to use this middleware which will convert as we used that after router middleware so 
  node js /express won't able to read the req body we were sending
 */
-
+app.use("/api/messaages",messageRoutes);
 
 
 app.get("/",(req,res)=>{
