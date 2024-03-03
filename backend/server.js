@@ -1,11 +1,14 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import authRoutes from './routes/auth.routes.js'
 import cookieParser from 'cookie-parser';
-import messageRoutes from'./routes/message.routes.js';
-import connectToMongoDB  from './db/connectToMongoDB.js';
-const PORT=process.env.PORT ||5000;
 
+import authRoutes from './routes/auth.routes.js'
+import userRoutes from './routes/user.routes.js'
+import messageRoutes from './routes/message.routes.js';
+
+import connectToMongoDB  from './db/connectToMongoDB.js';
+
+const PORT=process.env.PORT ||5000;
 dotenv.config()
 const app= express();
 app.use(express.json()); //middleware to parse the incoming requests with JSON payloads (from req.body)
@@ -26,6 +29,8 @@ we were not able to read req.body because i maintianed app.use(express.json()) m
 */
 app.use("/api/messaages",messageRoutes);
 
+//now creating user routes
+app.use("/api/users",userRoutes);
 
 app.get("/",(req,res)=>{
     //root route 
