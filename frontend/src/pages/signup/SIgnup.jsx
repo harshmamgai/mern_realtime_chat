@@ -1,5 +1,5 @@
 
-import GenderCheckbox from "./GenderCheckbox";
+import GenderCheckbox from "./GenderCheckBox";
 
 const SignUp = () => {
 	return (
