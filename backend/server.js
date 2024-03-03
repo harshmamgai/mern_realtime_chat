@@ -13,8 +13,8 @@ app.use(cookieParser());
 
 //adding cookieParser middleware before using any of the routes so that we can use cookies
 //as we need cookies for the protection routes to read token
-//created auth routes and added middleware
-app.use("/api/auth",authRoutes);
+
+app.use("/api/auth",authRoutes);//created auth routes and added middleware
 
 /*
 we were not able to read req.body because i maintianed app.use(express.json()) middleware after app.use("/api/auth",authRoutes) router middleware so while we 

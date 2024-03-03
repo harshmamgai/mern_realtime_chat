@@ -38,9 +38,10 @@ return res.status(400).json({error:"Username already exists"});
 
     if(newUser){
 
-        //generate jwt Token here
-    generateTokenAndSetCookie(newUser._id,res);
-    await newUser.save();
+    generateTokenAndSetCookie(newUser._id,res);  //generate jwt Token here
+
+    await newUser.save(); //saving newly created user into User collection 
+
     res.status(201).json({
         _id:newUser._id,
         fullName:newUser.fullName,
@@ -64,12 +65,13 @@ res.status(500).json({error:err.message})
 export const Login = async (req, res) => {
 try{
 const  {username,password}= req.body;
-const user=await  User.findOne({username});
-const isPasswordCorrect=await  bcrypt.compare(password,user?.password||"");
+const user=await  User.findOne({username}); //finding  the user in database who has this username
+const isPasswordCorrect=await  bcrypt.compare(password,user?.password||""); //here  we are using the compare method of bcrypt to compare  the password 
+//provided by user is equal to stored in the database
 if(!user ||!isPasswordCorrect){
-return res.status(400).json({error:"Invalid Credentials"});
+return res.status(400).json({error:"Invalid username or password"});
 }
-generateTokenAndSetCookie(user._id,res);
+generateTokenAndSetCookie(user._id,res);     //generating token and setting it to cookie
 res.status(200).json({
     _id:user._id,
     fullName:user.fullName,
@@ -84,7 +86,8 @@ catch(err){
 
 export const Logout = (req, res) => {
     try{
-        res.cookie("jwt","",{maxAge:0})
+        res.cookie("jwt","",{maxAge:0})    //clearing jwt from cookies , to use this res.cookie() method we have installed cookie-parser method
+        //in server.js [main file]
         res.status(200).json({message:"Logged out successfully!"});
     }
    catch(err){

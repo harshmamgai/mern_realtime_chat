@@ -50,7 +50,7 @@ await Promise.all([conversation.save(),newMessage.save()]);
 
 export const getMessages=async(req,res)=>{
 try{
-    console.log(req.params)
+    // console.log(req.params)
 const {id:userToChatId}=req.params;
 const senderId=req.user._id;
 const conversation=await Conversation.findOne({
@@ -58,7 +58,9 @@ const conversation=await Conversation.findOne({
 }).populate("messages"); // as we know  messages in conversation only contain the message id not the
 //content in order to see the content mongoose provides a method called populate
 
-res.status(200).json(conversation.messages);
+if(!conversation) return res.status(200).json([]);
+const messages =conversation.messages;
+res.status(200).json(messages);
 }
 catch(error){
     console.log("error in getMessages controller", error.message);
