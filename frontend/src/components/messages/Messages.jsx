@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import useGetMessages from "../../hooks/useGetMessages";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
 import Message from "./Message";
@@ -5,7 +6,14 @@ MessageSkeleton
 const Messages = () => {
 
   const{loading,messages}=useGetMessages();
-  //as soon as we send a message automatically the message should 
+  //as soon as we send a message automatically  THE SCREEN SHOULD SCROLL DOWN
+  const lastMessageRef = useRef();
+
+	useEffect(() => {
+		setTimeout(() => {
+			lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+		}, 100);
+	}, [messages]);
  
  return (
     <div className="px-4 flex-1 overflow-auto">
@@ -13,7 +21,7 @@ const Messages = () => {
 {!loading &&
 				messages.length > 0 &&
 				messages.map((message) => (
-					<div key={message._id} >
+          <div key={message._id} ref={lastMessageRef}>
 						<Message message={message} />
 					</div>
 				))}
