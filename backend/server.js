@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser';
-
+import cors from 'cors';
 import authRoutes from './routes/auth.routes.js'
 import userRoutes from './routes/user.routes.js'
 import messageRoutes from './routes/message.routes.js';
@@ -9,10 +9,15 @@ import messageRoutes from './routes/message.routes.js';
 import connectToMongoDB  from './db/connectToMongoDB.js';
 
 const PORT=process.env.PORT ||5000;
+
 dotenv.config()
 const app= express();
+app.use(cors({
+    origin: 'http://localhost:3000',
+  }));
 app.use(express.json()); //middleware to parse the incoming requests with JSON payloads (from req.body)
 app.use(cookieParser());
+
 
 //adding cookieParser middleware before using any of the routes so that we can use cookies
 //as we need cookies for the protection routes to read token
