@@ -1,17 +1,29 @@
-import { useContext, useState } from "react";
-import { createContext } from "react";
+import { createContext,useContext, useEffect, useState } from "react";
 
-export const AuthContext=createContext();
-export const useAuthContext=()=>{
+export const AuthContext = createContext();
+
+export const useAuthContext = () => {
     return useContext(AuthContext);
-}
-export  const AuthContextProvider = ({children}) =>{
-    const [authUser, setAuthUser]=useState(localStorage.getItem("chat-app")||null);
-    //state to hold the user info and  
-    return <AuthContext.Provider value={{authUser,setAuthUser}}>
-    {children}
-    </AuthContext.Provider>
 };
+
+export const AuthContextProvider = ({ children }) => {
+    const [authUser, setAuthUser] = useState(() => {
+        const storedUser = localStorage.getItem("chat-app");
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
+
+    useEffect(() => {
+        // Update local storage when authUser changes
+        localStorage.setItem("chat-app", JSON.stringify(authUser));
+    }, [authUser]);
+
+    return (
+        <AuthContext.Provider value={{ authUser, setAuthUser }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
 //in  this we are using local storage to store our data , if any one try to access the app without login it will show null .
 //value is an object that contains two properties: authUser & setAuthUser
 /*
