@@ -12,10 +12,9 @@ const PORT=process.env.PORT ||5000;
 dotenv.config()
 app.use(express.json()); //middleware to parse the incoming requests with JSON payloads (from req.body)
 app.use(cookieParser());
-
-
 //adding cookieParser middleware before using any of the routes so that we can use cookies
 //as we need cookies for the protection routes to read token
+
 
 app.use("/api/auth",authRoutes);//created auth routes and added middleware
 
@@ -28,6 +27,7 @@ we were not able to read req.body because i maintianed app.use(express.json()) m
  node js /express won't able to read the req body we were sending
 */
 app.use("/api/messaages",messageRoutes);
+
 
 //now creating user routes
 app.use("/api/users",userRoutes);

@@ -1,5 +1,6 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/messaage.model.js"
+import { getReceiverSocketId, io } from "../socket/socket.js";
  export const sendMessage=async(req,res)=>{
   try{
 const {message}=req.body;
@@ -32,20 +33,30 @@ const newMessage=new Message({
     senderId,
     recieverId,
     message,
-})
+});
 
 
-res.status(201).json({newMessage})
+
 if(newMessage){
     //if new message got created then push the newly created message id's to conversation.messages array 
     conversation.messages.push(newMessage._id)
 
 }
-//SOCKET.io functionality to make app realtime
 
 // await conversation.save();
 // await newMessage.save(); //saving newly created message in database
 await Promise.all([conversation.save(),newMessage.save()]);
+
+	// SOCKET IO FUNCTIONALITY WILL GO HERE
+    const receiverSocketId = getReceiverSocketId(recieverId);
+    //to check if user is online
+    if (receiverSocketId) {
+        // io.to(<socket_id>).emit() used to send events to specific client
+        io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+
+    res.status(201).json({newMessage})
+
   }
   catch(error){
     console.log(error.messaage)
