@@ -6,8 +6,10 @@ import authRoutes from './routes/auth.routes.js'
 import userRoutes from './routes/user.routes.js'
 import messageRoutes from './routes/message.routes.js';
 import {app,server } from './socket/socket.js';
+import path from 'path';
 import connectToMongoDB  from './db/connectToMongoDB.js';
 
+const __dirname=path.resolve();
 const PORT=process.env.PORT ||5000;
 dotenv.config()
 app.use(express.json()); //middleware to parse the incoming requests with JSON payloads (from req.body)
@@ -32,9 +34,18 @@ app.use("/api/messaages",messageRoutes);
 //now creating user routes
 app.use("/api/users",userRoutes);
 
-app.get("/",(req,res)=>{
-    //root route 
-    res.send("Hello World!!")
+
+
+app.use(express.static(path.join(__dirname,"/frontend/dist"))) 
+//dist will be created once we build our application 
+
+// app.get("/",(req,res)=>{
+//     //root route 
+//     res.send("Hello World!!")
+// })
+
+app.get("*",(req,res)=>{
+    res.sendFile(path.join(__dirname,"frontend","dist","index.html"))
 })
 
 

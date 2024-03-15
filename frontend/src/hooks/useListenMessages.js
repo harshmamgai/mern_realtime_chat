@@ -13,7 +13,7 @@ const useListenMessages = () => {
 			setMessages([...messages, newMessage]);
 		});
 
-		return () => socket?.off("newMessage");
+		return () => socket?.off("newMessage");// cleanup when component unmounts
 	}, [socket, setMessages, messages]);
 };
 export default useListenMessages;

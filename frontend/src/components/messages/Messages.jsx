@@ -12,7 +12,7 @@ const Messages = () => {
 	useEffect(() => {
 		setTimeout(() => {
 			lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-		}, 100);
+		}, 10);
 	}, [messages]);
 
 	return (
